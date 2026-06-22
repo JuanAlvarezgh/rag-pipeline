@@ -1,0 +1,26 @@
+services:
+  postgres:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_USER: rag
+      POSTGRES_PASSWORD: rag
+      POSTGRES_DB: rag
+    ports: ["5438:5432"]
+    volumes:
+      - ./seed:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U rag -d rag"]
+      interval: 5s
+      retries: 10
+
+  api:
+    build: .
+    environment:
+      PG_DSN: postgresql://rag:rag@postgres:5432/rag
+      LLM_API_KEY: ${LLM_API_KEY:-}
+      LLM_BASE_URL: ${LLM_BASE_URL:-https://api.openai.com/v1}
+      LLM_MODELO: ${LLM_MODELO:-gpt-4o-mini}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    ports: ["8000:8000"]

@@ -1,0 +1,37 @@
+[
+  {
+    "titulo": "ELT vs ETL en la ingenieria de datos moderna",
+    "fuente": "nota interna",
+    "texto": "El patron ETL (Extraer, Transformar, Cargar) transforma los datos antes de escribirlos en el destino, lo que requiere una capa de procesamiento intermedia. ELT invierte el orden: primero carga los datos crudos en el almacen y luego los transforma dentro de el, aprovechando el computo masivo de plataformas como BigQuery, Snowflake o Redshift. ELT es preferido en la nube porque elimina el servidor ETL dedicado, reduce la latencia de carga y permite explorar los datos crudos en cualquier momento. Sin embargo, ETL sigue siendo util cuando los datos contienen informacion sensible que no debe almacenarse sin depurar o cuando el destino tiene capacidad de computo limitada."
+  },
+  {
+    "titulo": "Procesamiento de datos en tiempo real con Kafka y Spark",
+    "fuente": "nota interna",
+    "texto": "Apache Kafka es una plataforma de mensajeria distribuida que actua como bus de eventos: los productores publican registros en topicos y los consumidores los leen de forma independiente y a su propio ritmo, garantizando durabilidad mediante replicacion en disco. Apache Spark Structured Streaming permite procesar esos eventos en micro-lotes o en modo continuo, aplicando transformaciones SQL o de DataFrame sobre ventanas de tiempo deslizantes o fijas. La combinacion Kafka-Spark es el estandar de facto para pipelines de streaming en entornos empresariales: Kafka absorbe los picos de ingesta y Spark proporciona la capacidad de computo elastica para agregarlos, filtrarlos o enriquecerlos antes de escribir los resultados en un lago de datos o una base de datos operacional."
+  },
+  {
+    "titulo": "Calidad de datos y observabilidad en pipelines",
+    "fuente": "nota interna",
+    "texto": "La calidad de datos mide en que grado los datos son completos, precisos, consistentes, oportunos y validos para el uso previsto. La observabilidad de datos extiende ese concepto al monitoreo continuo de los pipelines: detecta anomalias de volumen (filas que llegan de mas o de menos), deriva de esquema (columnas nuevas o eliminadas) y degradacion de distribucion estadistica. Herramientas como Great Expectations, dbt tests y Monte Carlo codifican las expectativas del negocio en contratos de datos que se ejecutan en cada carga. Cuando un contrato falla, el sistema alerta al equipo antes de que los datos defectuosos lleguen a los tableros o modelos de ML, reduciendo el costo de correccion tardia."
+  },
+  {
+    "titulo": "Modelado dimensional y esquema estrella",
+    "fuente": "nota interna",
+    "texto": "El modelado dimensional organiza los datos de un almacen en tablas de hechos y tablas de dimensiones. La tabla de hechos contiene las metricas cuantitativas del negocio (ventas, clics, transacciones) junto con claves foraneas que apuntan a las dimensiones (tiempo, producto, cliente, geografia). El esquema estrella coloca la tabla de hechos en el centro y las dimensiones alrededor, formando una estrella; el esquema copo de nieve normaliza ademas las dimensiones en subtablas. El modelado dimensional, popularizado por Ralph Kimball, facilita las consultas analiticas porque minimiza los joins necesarios y presenta una semantica clara al usuario de negocio. Es la base de la mayoria de los data warehouses relacionales y de las capas de presentacion en herramientas como dbt o Looker."
+  },
+  {
+    "titulo": "Recuperacion aumentada por generacion (RAG)",
+    "fuente": "nota interna",
+    "texto": "RAG (Retrieval-Augmented Generation) es una arquitectura que combina la recuperacion de informacion con la generacion de lenguaje natural. Ante una pregunta del usuario, el sistema convierte la pregunta en un vector de embeddings, busca en una base de datos vectorial los fragmentos de texto mas semanticamente cercanos y los incluye como contexto en el prompt que se envia al modelo de lenguaje. El modelo genera la respuesta basandose en ese contexto recuperado, en lugar de depender solo de su conocimiento interno. RAG reduce las alucinaciones, permite actualizar la base de conocimiento sin reentrenar el modelo y hace auditable la respuesta porque siempre se puede rastrear que fragmentos la sustentaron."
+  },
+  {
+    "titulo": "Bases de datos vectoriales y pgvector",
+    "fuente": "nota interna",
+    "texto": "Una base de datos vectorial almacena vectores de alta dimension (embeddings) y ofrece busqueda eficiente por similitud semantica, a diferencia de las bases de datos relacionales que buscan por igualdad exacta o rango numerico. pgvector es una extension de PostgreSQL que anade el tipo de dato vector y los operadores de distancia coseno, producto interior y distancia euclidiana. Permite crear indices HNSW o IVFFlat para acelerar la busqueda aproximada de vecinos mas cercanos (ANN) sobre millones de vectores. Al estar integrada en PostgreSQL, pgvector hereda las garantias ACID, la gestion de roles y las capacidades de consulta SQL, lo que la convierte en una opcion pragmatica para sistemas RAG que ya usan Postgres como base de datos principal."
+  },
+  {
+    "titulo": "Embeddings y similitud coseno",
+    "fuente": "nota interna",
+    "texto": "Un embedding es una representacion numerica densa de un objeto (texto, imagen, audio) en un espacio vectorial de dimension fija, donde la proximidad geometrica refleja similitud semantica. Los modelos de sentence-transformers como paraphrase-multilingual-MiniLM-L12-v2 generan embeddings de 384 dimensiones para oraciones en multiples idiomas. La similitud coseno mide el coseno del angulo entre dos vectores: vale 1 si son identicos en direccion (maxima similitud), 0 si son ortogonales (sin relacion) y -1 si apuntan en sentidos opuestos. La distancia coseno se define como 1 menos la similitud coseno y es la metrica mas usada en recuperacion de informacion porque es invariante a la magnitud del vector, lo que permite comparar textos de distintas longitudes de forma justa."
+  }
+]
